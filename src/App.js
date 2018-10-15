@@ -1,25 +1,36 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import GenerateSim from './GenerateSim';
+import DisplaySim from './DisplaySim';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      simpson : {},
+    }
+
+  }
+
+  getSimpson() {
+    fetch("https://thesimpsonsquoteapi.glitch.me/quotes")
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        simpson: data[0],
+      });
+    });
+  }
+
+
   render() {
+    console.log(this.state)
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+       <GenerateSim SelectSim={()=> this.getSimpson()}/>
+       
+        <DisplaySim simpson={this.state.simpson}/>
+       
       </div>
     );
   }
